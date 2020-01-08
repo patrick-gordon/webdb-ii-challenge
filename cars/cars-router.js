@@ -30,4 +30,35 @@ router.get('/', (req,res) => {
     })
 })
 
+router.put('/:id', (req, res) => {
+    const { id } = req.params
+    const changes = req.body
+
+    db('cars')
+    .where({ id })
+    .update(changes)
+    .then(count => {
+        res.status(200).json({ updated: count})
+    })
+    .catch(err => {
+        console.log(err)
+        res.status(500).json({error: 'error updating'})
+    })
+})
+
+router.delete('/:id', (req, res) => {
+    const {id} = req.params
+
+    db('cars')
+    .where({ id })
+    .del()
+    .then(count => {
+        res.status(200).json({deleted: count})
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json({error: 'error deleting'})
+    })
+})
+
 module.exports = router;
